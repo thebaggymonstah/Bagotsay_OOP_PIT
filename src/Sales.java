@@ -54,6 +54,8 @@ public class Sales {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+                int count = 0;
+                int prod_Index;
                 boolean test = false;
                 JTextField prodID = new JTextField();
                 JTextField pQty = new JTextField();
@@ -62,15 +64,20 @@ public class Sales {
                         "Product ID: ", prodID
                 };
                 Object[] field2 = {
-                        "Product ID: ", pQty
+                        "Quantity: ", pQty
                 };
 
                 JOptionPane.showConfirmDialog(null, field1, "Input Product ID", JOptionPane.OK_CANCEL_OPTION);
                 String pID_str = prodID.getText();
 
-                for(int i = 0; i <= products.size(); i++){
-                    test = pID_str.equals(products.get(i).getProduct_ID());
+                for (Product product : products) {
+                    test = pID_str.equals(product.getProduct_ID());
+                    count++;
+                    if(test){
+                        break;
+                    }
                 }
+                prod_Index = count;
                 if(!test) {
                     JOptionPane.showMessageDialog(null,"Product ID not found.",null, JOptionPane.WARNING_MESSAGE);
                 }
@@ -78,6 +85,13 @@ public class Sales {
                     JOptionPane.showConfirmDialog(null, field2, "Input Quantity", JOptionPane.OK_CANCEL_OPTION);
                     String pQty_str = pQty.getText();
                     int pQty_Val = Integer.parseInt(pQty_str);
+
+                    try{
+                        int prod_NewQty = products.get(prod_Index).getProduct_Quantity() - pQty_Val;
+                    }
+                    catch (Exception d){
+                        JOptionPane.showMessageDialog(null,"Invalid Amount.",null, JOptionPane.WARNING_MESSAGE);
+                    }
 
 
                 }
