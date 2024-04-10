@@ -4,6 +4,7 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
+import java.util.zip.DataFormatException;
 import javax.swing.*;
 
 
@@ -52,28 +53,36 @@ public class Sales {
         option2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               try {
-                   boolean test = false;
-                   JTextField prodID = new JTextField();
-                   Object[] field1 = {
-                           "Product ID: ", prodID
-                   };
 
-                   JOptionPane.showConfirmDialog(null, field1, "Input Product ID", JOptionPane.OK_CANCEL_OPTION);
+                boolean test = false;
+                JTextField prodID = new JTextField();
+                JTextField pQty = new JTextField();
 
-                   for(int i = 0; i <= products.size(); i++){
-                       test = prodID.equals(products.get(i).getProduct_ID());
-                   }
-                   if(!test){
-                       throw new DataException(){
+                Object[] field1 = {
+                        "Product ID: ", prodID
+                };
+                Object[] field2 = {
+                        "Product ID: ", pQty
+                };
 
-                       }
-                   }
-               }
-               catch(Exception d){
-                   JOptionPane.showMessageDialog(null,"Product ID not found.",null, JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showConfirmDialog(null, field1, "Input Product ID", JOptionPane.OK_CANCEL_OPTION);
+                String pID_str = prodID.getText();
 
-               }
+                for(int i = 0; i <= products.size(); i++){
+                    test = pID_str.equals(products.get(i).getProduct_ID());
+                }
+                if(!test) {
+                    JOptionPane.showMessageDialog(null,"Product ID not found.",null, JOptionPane.WARNING_MESSAGE);
+                }
+                else{
+                    JOptionPane.showConfirmDialog(null, field2, "Input Quantity", JOptionPane.OK_CANCEL_OPTION);
+                    String pQty_str = pQty.getText();
+                    int pQty_Val = Integer.parseInt(pQty_str);
+
+
+                }
+
+
             }
         });
         option3.addActionListener(new ActionListener() {
