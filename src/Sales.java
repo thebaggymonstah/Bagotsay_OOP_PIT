@@ -77,7 +77,7 @@ public class Sales {
                         break;
                     }
                 }
-                prod_Index = count;
+                prod_Index = count - 1;
                 if(!test) {
                     JOptionPane.showMessageDialog(null,"Product ID not found.",null, JOptionPane.WARNING_MESSAGE);
                 }
@@ -86,11 +86,12 @@ public class Sales {
                     String pQty_str = pQty.getText();
                     int pQty_Val = Integer.parseInt(pQty_str);
 
-                    try{
-                        int prod_NewQty = products.get(prod_Index).getProduct_Quantity() - pQty_Val;
-                    }
-                    catch (Exception d){
+                    if(pQty_Val < 0 || pQty_Val > products.get(prod_Index).getProduct_Quantity()){
                         JOptionPane.showMessageDialog(null,"Invalid Amount.",null, JOptionPane.WARNING_MESSAGE);
+                        throw new ArithmeticException();
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(null,"Success",null,JOptionPane.PLAIN_MESSAGE);
                     }
 
 
