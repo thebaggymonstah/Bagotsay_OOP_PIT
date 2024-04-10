@@ -1,5 +1,5 @@
 //Christian_Phillip_Bagotsay-CPE_1A_1
-//OOP_Assignment
+//OOP_Assignment-Product.java
 
 
 import java.lang.String;

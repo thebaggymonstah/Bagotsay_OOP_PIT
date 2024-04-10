@@ -1,3 +1,6 @@
+//Christian_Phillip_Bagotsay-CPE_1A_1
+//OOP_Assignment-Sales.java
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
