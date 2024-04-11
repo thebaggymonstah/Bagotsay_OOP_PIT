@@ -9,9 +9,9 @@ public class Product {
     private String product_ID;
     private String product_Name;
     private float product_Unit_Price;
-    private int product_Quantity;
-    private int sold_Quantity;
-    private double total_Sales;
+    public int product_Quantity;
+    public int sold_Quantity;
+    public double total_Sales;
     public float discount;
 
     public Product(){

@@ -60,6 +60,7 @@ public class Sales {
                 float temp_Price = 0;
                 int prod_Index;
                 boolean test = false;
+                StringBuilder str1 = new StringBuilder();
                 JTextField prodID = new JTextField();
                 JTextField pQty = new JTextField();
 
@@ -103,10 +104,16 @@ public class Sales {
 
                         JOptionPane.showMessageDialog(null,"Total Price for Current Item: " + temp_Price,"Success",JOptionPane.PLAIN_MESSAGE);
                         total_Price[0] += temp_Price;
-                        JOptionPane.showMessageDialog(null,"Total Price: " + total_Price[0],"Success",JOptionPane.PLAIN_MESSAGE);
+
                         products.get(prod_Index).setProduct_Quantity(products.get(prod_Index).getProduct_Quantity()-pQty_Val);
                         products.get(prod_Index).setSold_Quantity(pQty_Val);
                         products.get(prod_Index).setTotal_Sales(temp_Price);
+
+                        for (int i = 0; i < products.size(); i++){
+                            str1.append(products.get(i).toString()).append("\n");
+                        }
+
+                        JOptionPane.showMessageDialog(null,str1+"Total Price: " + total_Price[0],"Success",JOptionPane.PLAIN_MESSAGE);
 
                     }
 
