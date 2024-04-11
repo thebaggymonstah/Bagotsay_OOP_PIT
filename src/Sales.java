@@ -12,9 +12,9 @@ import javax.swing.*;
 public class Sales {
 
     public static void main(String[] args) throws Exception{
-        Product myProduct = new Product();
-        ArrayList<Product> products = new ArrayList<Product>();
 
+        ArrayList<Product> products = new ArrayList<Product>();
+        final float[] total_Price = {0};
         StringBuilder str = new StringBuilder();
 
         final JButton option1 = new JButton("Add Stock");
@@ -24,6 +24,7 @@ public class Sales {
         option1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Product myProduct = new Product();
                 JTextField prodID = new JTextField();
                 JTextField prodName = new JTextField();
                 JTextField unitPrice = new JTextField();
@@ -47,6 +48,7 @@ public class Sales {
 
                 myProduct.add_Product(id_Text,name_Text,price_Val,pQty_Val);
                 products.add(myProduct);
+                str.append(myProduct.toString()).append("\n");
 
             }
         });
@@ -55,6 +57,7 @@ public class Sales {
             public void actionPerformed(ActionEvent e) {
 
                 int count = 0;
+                float temp_Price = 0;
                 int prod_Index;
                 boolean test = false;
                 JTextField prodID = new JTextField();
@@ -67,17 +70,22 @@ public class Sales {
                         "Quantity: ", pQty
                 };
 
+
                 JOptionPane.showConfirmDialog(null, field1, "Input Product ID", JOptionPane.OK_CANCEL_OPTION);
                 String pID_str = prodID.getText();
 
-                for (Product product : products) {
-                    test = pID_str.equals(product.getProduct_ID());
+                for (int i = 0; i < products.size();i++) {
+                    test = pID_str.equals(products.get(i).getProduct_ID());
                     count++;
+                    System.out.println(products.get(i).toString());
+
                     if(test){
                         break;
                     }
                 }
+
                 prod_Index = count - 1;
+
                 if(!test) {
                     JOptionPane.showMessageDialog(null,"Product ID not found.",null, JOptionPane.WARNING_MESSAGE);
                 }
@@ -86,12 +94,20 @@ public class Sales {
                     String pQty_str = pQty.getText();
                     int pQty_Val = Integer.parseInt(pQty_str);
 
-                    if(pQty_Val < 0 || pQty_Val > products.get(prod_Index).getProduct_Quantity()){
+                    if(pQty_Val <= 0 || pQty_Val > products.get(prod_Index).getProduct_Quantity()){
                         JOptionPane.showMessageDialog(null,"Invalid Amount.",null, JOptionPane.WARNING_MESSAGE);
                         throw new ArithmeticException();
                     }
                     else {
-                        JOptionPane.showMessageDialog(null,"Success",null,JOptionPane.PLAIN_MESSAGE);
+                        temp_Price = products.get(prod_Index).getProduct_Unit_Price()*pQty_Val;
+
+                        JOptionPane.showMessageDialog(null,"Total Price for Current Item: " + temp_Price,"Success",JOptionPane.PLAIN_MESSAGE);
+                        total_Price[0] += temp_Price;
+                        JOptionPane.showMessageDialog(null,"Total Price: " + total_Price[0],"Success",JOptionPane.PLAIN_MESSAGE);
+                        products.get(prod_Index).setProduct_Quantity(products.get(prod_Index).getProduct_Quantity()-pQty_Val);
+                        products.get(prod_Index).setSold_Quantity(pQty_Val);
+                        products.get(prod_Index).setTotal_Sales(temp_Price);
+
                     }
 
 
@@ -103,10 +119,7 @@ public class Sales {
         option3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                for (Product product : products) {
-                    str.append(product.toString());
-                    str.append("\n");
-                }
+
                 JOptionPane.showMessageDialog(null, str);
             }
         });
