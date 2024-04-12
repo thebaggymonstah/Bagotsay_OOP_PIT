@@ -1,6 +1,10 @@
+//Christian_Phillip_Bagotsay-CPE_1A_1
+//OOP_Assignment-Sales.java
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
+import java.util.zip.DataFormatException;
 import javax.swing.*;
 
 
@@ -8,9 +12,9 @@ import javax.swing.*;
 public class Sales {
 
     public static void main(String[] args) throws Exception{
-        Product myProduct = new Product();
-        ArrayList<Product> products = new ArrayList<Product>();
 
+        ArrayList<Product> products = new ArrayList<Product>();
+        final float[] total_Price = {0};
         StringBuilder str = new StringBuilder();
 
         final JButton option1 = new JButton("Add Stock");
@@ -20,6 +24,7 @@ public class Sales {
         option1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Product myProduct = new Product();
                 JTextField prodID = new JTextField();
                 JTextField prodName = new JTextField();
                 JTextField unitPrice = new JTextField();
@@ -43,43 +48,85 @@ public class Sales {
 
                 myProduct.add_Product(id_Text,name_Text,price_Val,pQty_Val);
                 products.add(myProduct);
+                str.append(myProduct.toString()).append("\n");
 
             }
         });
         option2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               try {
-                   boolean test = false;
-                   JTextField prodID = new JTextField();
-                   Object[] field1 = {
-                           "Product ID: ", prodID
-                   };
 
-                   JOptionPane.showConfirmDialog(null, field1, "Input Product ID", JOptionPane.OK_CANCEL_OPTION);
+                int count = 0;
+                float temp_Price = 0;
+                int prod_Index;
+                boolean test = false;
+                StringBuilder str1 = new StringBuilder();
+                JTextField prodID = new JTextField();
+                JTextField pQty = new JTextField();
 
-                   for(int i = 0; i <= products.size(); i++){
-                       test = prodID.equals(products.get(i).getProduct_ID());
-                   }
-                   if(!test){
-                       throw new DataException(){
+                Object[] field1 = {
+                        "Product ID: ", prodID
+                };
+                Object[] field2 = {
+                        "Quantity: ", pQty
+                };
 
-                       }
-                   }
-               }
-               catch(Exception d){
-                   JOptionPane.showMessageDialog(null,"Product ID not found.",null, JOptionPane.WARNING_MESSAGE);
 
-               }
+                JOptionPane.showConfirmDialog(null, field1, "Input Product ID", JOptionPane.OK_CANCEL_OPTION);
+                String pID_str = prodID.getText();
+
+                for (int i = 0; i < products.size();i++) {
+                    test = pID_str.equals(products.get(i).getProduct_ID());
+                    count++;
+                    System.out.println(products.get(i).toString());
+
+                    if(test){
+                        break;
+                    }
+                }
+
+                prod_Index = count - 1;
+
+                if(!test) {
+                    JOptionPane.showMessageDialog(null,"Product ID not found.",null, JOptionPane.WARNING_MESSAGE);
+                }
+                else{
+                    JOptionPane.showConfirmDialog(null, field2, "Input Quantity", JOptionPane.OK_CANCEL_OPTION);
+                    String pQty_str = pQty.getText();
+                    int pQty_Val = Integer.parseInt(pQty_str);
+
+                    if(pQty_Val <= 0 || pQty_Val > products.get(prod_Index).getProduct_Quantity()){
+                        JOptionPane.showMessageDialog(null,"Invalid Amount.",null, JOptionPane.WARNING_MESSAGE);
+                        throw new ArithmeticException();
+                    }
+                    else {
+                        temp_Price = products.get(prod_Index).getProduct_Unit_Price()*pQty_Val;
+
+                        JOptionPane.showMessageDialog(null,"Total Price for Current Item: " + temp_Price,"Success",JOptionPane.PLAIN_MESSAGE);
+                        total_Price[0] += temp_Price;
+
+                        products.get(prod_Index).setProduct_Quantity(products.get(prod_Index).getProduct_Quantity()-pQty_Val);
+                        products.get(prod_Index).setSold_Quantity(pQty_Val);
+                        products.get(prod_Index).setTotal_Sales(temp_Price);
+
+                        for (int i = 0; i < products.size(); i++){
+                            str1.append(products.get(i).toString()).append("\n");
+                        }
+
+                        JOptionPane.showMessageDialog(null,str1+"Total Price: " + total_Price[0],"Success",JOptionPane.PLAIN_MESSAGE);
+
+                    }
+
+
+                }
+
+
             }
         });
         option3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                for (Product product : products) {
-                    str.append(product.toString());
-                    str.append("\n");
-                }
+
                 JOptionPane.showMessageDialog(null, str);
             }
         });
